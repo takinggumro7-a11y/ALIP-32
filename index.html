@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MTM College Survey</title>
+    <style>
+        * { box-sizing: border-box; touch-action: manipulation; }
+        body {
+            margin: 0; padding: 0; display: flex; justify-content: center; align-items: center;
+            height: 100vh; background: #0b0b14; color: #fff; font-family: sans-serif; overflow: hidden;
+        }
+        .container {
+            width: 90%; max-width: 400px; padding: 30px; background: #1a1a2e;
+            border-radius: 15px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .hidden { display: none !important; }
+        h1 { font-size: 1.5rem; margin-bottom: 20px; color: #f1c40f; }
+        button {
+            padding: 15px; margin: 10px; border: none; border-radius: 8px;
+            font-weight: bold; cursor: pointer; width: 80%;
+        }
+        .yes-btn { background: #27ae60; color: white; }
+        .no-btn { background: #c0392b; color: white; position: relative; }
+        .option-btn { background: #2980b9; color: white; }
+        #certificate {
+            background: #fff; color: #111; padding: 20px; border: 5px solid gold;
+            font-family: serif; margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="faak" src="faak.mp3" preload="auto"></audio>
+    <audio id="laugh" src="funny_laugh.mp3" preload="auto"></audio>
+
+    <div id="stage1" class="container">
+        <h1>Official MTM Masti Survey?</h1>
+        <button class="yes-btn" onclick="startMasti()">START</button>
+    </div>
+
+    <div id="stage2" class="container hidden">
+        <h1>SABSE BARA CHODU KON?</h1>
+        <button class="no-btn" onmouseover="moveBtn(this)" ontouchstart="moveBtn(this)" onclick="playFaak()">RAJ</button>
+        <button class="option-btn" onclick="nextStage(3)">ALIP</button>
+    </div>
+
+    <div id="stage3" class="container hidden">
+        <h1>KON GAY HAI?</h1>
+        <button class="no-btn" onmouseover="moveBtn(this)" ontouchstart="moveBtn(this)" onclick="playFaak()">TAKING</button>
+        <button class="option-btn" onclick="showCert()">ALIP</button>
+    </div>
+
+    <div id="stage4" class="container hidden">
+        <div id="certificate">
+            <h3>CERTIFICATE</h3>
+            <p>This is to certify that</p>
+            <h2 style="text-decoration: underline;">ALIP</h2>
+            <p>is officially the biggest</p>
+            <h3 style="color:red;">CHODU & GAY</h3>
+        </div>
+        <button class="option-btn" onclick="location.reload()" style="margin-top:20px;">RESTART</button>
+    </div>
+
+    <script>
+        const faak = document.getElementById('faak');
+        const laugh = document.getElementById('laugh');
+
+        // THIS IS THE KEY: Play and Pause immediately to "unlock" the audio
+        function startMasti() {
+            faak.play().then(() => { faak.pause(); faak.currentTime = 0; }).catch(e => console.log(e));
+            laugh.play().then(() => { laugh.pause(); laugh.currentTime = 0; }).catch(e => console.log(e));
+            nextStage(2);
+        }
+
+        function playFaak() {
+            faak.currentTime = 0;
+            faak.play();
+        }
+
+        function nextStage(num) {
+            document.querySelectorAll('.container').forEach(c => c.classList.add('hidden'));
+            document.getElementById('stage' + num).classList.remove('hidden');
+        }
+
+        function showCert() {
+            laugh.play();
+            nextStage(4);
+        }
+
+        function moveBtn(btn) {
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            btn.style.position = 'fixed';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+    </script>
+</body>
+</html>
